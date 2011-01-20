@@ -1,0 +1,22 @@
+Last Modified: Thu Jan 20, 2011 at 13:56
+
+Code
+	Unit tests!!
+	Start with node distance function
+	Two inputs N and k
+		N - total nodes in system
+		k - number of neighbors to keep
+	Object description
+	Need a summing of distances function/method
+Paper
+	Problem Statement
+		What was the assignment
+		Cite T-Man
+	Approach
+		How I solved the problem
+	Results and Figures
+		Interpretation of the figure(s)
+		Plot of sum of distance by cycle
+		Graph of node connectivity at cycles 1, 5, 10, and 15
+	Conclusions
+		Short review and any thoughts to share
