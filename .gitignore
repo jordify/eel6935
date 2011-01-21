@@ -1,3 +1,4 @@
+# Latex
 *.aux
 *.bbl
 *.blg
@@ -18,4 +19,11 @@
 *.snm
 *.vrb
 
+# Python
+*.pyc
+
+# Vim
+.*.sw[a-z]
+
+# Project specific ignores below
 notes/*

@@ -1,4 +1,4 @@
-Last Modified: Thu Jan 20, 2011 at 13:56
+Last Modified: Fri Jan 21, 2011 at 09:32
 
 Code
 	Unit tests!!
@@ -6,8 +6,25 @@ Code
 	Two inputs N and k
 		N - total nodes in system
 		k - number of neighbors to keep
-	Object description
-	Need a summing of distances function/method
+	Class Node(identifier)
+		Variables
+			myID <- identifier
+			k <- amount of neighbors to keep
+			neighbors <- Dictionary of nodeIDs, distance
+		Methods
+			FindDistance(nodeID) <- calculate distance to nodeID
+			ChooseNewNeighbors(newnNodesList) <- Calculate distances to new nodes and choose k closest
+			Gossip(nodeID) <- send node my neighbor list, receive theirs, run ChooseNewNegihbors
+			SumCurrentDistances() <- returns the current neighbor distances
+	Class Simulator(cycles, N, k, graph)
+		Variables
+			cycles
+			N
+			k
+			graph
+		Methods
+			__init__(above) <- network initialization phase
+			Simulate() <- network evolution phase
 Paper
 	Problem Statement
 		What was the assignment
