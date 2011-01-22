@@ -1,4 +1,4 @@
-Last Modified: Fri Jan 21, 2011 at 09:32
+Last Modified: Fri Jan 21, 2011 at 12:07
 
 Code
 	Unit tests!!
@@ -11,7 +11,9 @@ Code
 			myID <- identifier
 			k <- amount of neighbors to keep
 			neighbors <- Dictionary of nodeIDs, distance
+			bits <- address space
 		Methods
+			__init__(above) <- need to set up random neighbors in address space
 			FindDistance(nodeID) <- calculate distance to nodeID
 			ChooseNewNeighbors(newnNodesList) <- Calculate distances to new nodes and choose k closest
 			Gossip(nodeID) <- send node my neighbor list, receive theirs, run ChooseNewNegihbors

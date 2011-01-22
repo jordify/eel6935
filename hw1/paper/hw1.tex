@@ -1,4 +1,4 @@
-% Last Modified: Thu Jan 20, 2011 at 13:56
+% Last Modified: Fri Jan 21, 2011 at 16:03
 
 \documentclass{article}
 \usepackage{cite, listing, graphicx, subfigure, amsmath}
@@ -12,15 +12,31 @@
 
 \maketitle
 \section{Problem Statement}
-  Using an algorithm based on the paper~\cite{t-man} by Jelasity and Babaoglu
-  \ldots
+  Using an algorithm based on the paper~\cite{t-man} by Jelasity and Babaoglu, 
+  this assignment asked to simulate a distributed node system managing it's
+  topology. The algorithm involves having the nodes trading neighbor lists and
+  selecting the closest. The result is that after a certain amount of cycles,
+  the topology begins to converge to the optimal.
 \section{Approach}
-  How I went about this
+  Following the notes in the assignment, the algorithm was created in Python
+  2.7.1.  The nodes where instantiated as objects that had a gossip method in
+  which the node would trade neighbor lists with one of its neighbors. The node
+  would then select the $k$ closest nodes, where $k$ is an input parameter. The
+  node class had other methods for finding the distance to a given node and
+  choosing the closest neighbors.  Another class was made to help set up a
+  system and simulate it.  More information can be found in the source code
+  \texttt{hw1.py}.
 \section{Results and Figures}
-  Definitely a plot on how the sum of lengths decreased over time and perhaps
-  the node connectivity graphs if you can learn how to do that.
-\section{Conclusions}
-  Short thoughts on the project.
+  The code was written with unit tests to ensure every step of development was
+  correct and development proceeded without major issues. Figure~\ref{results}
+  shows the plot requested for this assignment.
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{simData.png}
+    \caption{Total Distances in Neighbors over 50 simulation cycles with system
+    size of 1024 nodes and neighbor list length of 3.}
+    \label{results}
+  \end{figure}
 
 \bibliographystyle{plain}
 \bibliography{dist.bib}

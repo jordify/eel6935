@@ -15,11 +15,11 @@ Compiling and running:
 This assignment was written and tested with Python 2.7.1. There is no compilation required
 just run with the command:
 
-prompt> python hw1.pdf 1024 3
+prompt> python hw1.pdf -N 1024 -k 3
 
 Where 1024 and 3 are the N and k inputs. If in place of those last two arguments one where
 run:
 
-prompt> python hw1.pdf help
+prompt> python hw1.pdf --help
 
-The program would output the possible inputs.
+The program would output all of the possible inputs.
