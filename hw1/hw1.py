@@ -1,8 +1,14 @@
 #!/usr/bin/python2
 """
-File: hw1.py
-Last Modified: Sat Jan 22, 2011 at 12:52
+File: hw1.py 
+Last Modified: Sat Jan 22, 2011 at 18:16
 Author: Jorge Gomez
+
+Description:
+Simulation of a gossip-based topology managment algorithm for peer-to-peer
+systems. Takes as input system size, neighbor list size, and simulation cycles
+and outputs the sum of distances in all node neighbor lists for each cycle.
+Optionally, a graph of total distances vs cycle number is produced.
 """
 
 import sys
@@ -47,7 +53,9 @@ class Node(object):
 
   def ChooseNewNeighbors(self,newNodesList):
     '''Given a list of new nodes and my list of neighbors, choose the closest k
-    nodes to become my new neighbor list'''
+    nodes to become my new neighbor list.
+
+    !!!!BUG: Will choose duplicate neighbors if given them by different nodes.'''
     # Join my nodes with new nodes
     allNodes = self.neighbors + newNodesList
     # Get all node distances
@@ -100,6 +108,7 @@ list length %d.' % (self.cycles, self.n, self.k)
     for i in range(1,N):
       self.nodes.append(Node(i,N,k))
     # Give them random neighbors
+# !!!!!BUG: Will give the same random neighbor twice!!!
     nodeID = 1
     for node in self.nodes:
       for i in range(k):
@@ -126,7 +135,7 @@ list length %d.' % (self.cycles, self.n, self.k)
     return simData
 
 
-class TestNodeClass(unittest.TestCase):
+class TestNodeClass(unittest.TestCase): #{{{
   '''Unit Tests used during development to incrementally test features'''
   def test_init(self):
     smallNode = Node(identifier=8,N=16,k=3)
@@ -171,25 +180,68 @@ class TestNodeClass(unittest.TestCase):
     for node in node2.neighbors:
       self.assertLess(node.ID, 5)
 
-  def test_GossipRotateNeighbors(self):
-    node1 = Node(1,16,3)
-    node2 = Node(2,16,3)
-    node3 = Node(3,16,3)
-    node4 = Node(4,16,3)
-    node1.neighbors = [node2, node3, node4]
-    node2.neighbors = [node3, node4, node1]
-    node3.neighbors = [node4, node1, node2]
-    node4.neighbors = [node1, node2, node3]
-    self.assertEqual(node1.currNeighbor, 0)
-    node1.Gossip()
-    self.assertEqual(node1.currNeighbor, 1)
-    node1.Gossip()
-    self.assertEqual(node1.currNeighbor, 2)
-    node1.Gossip()
-    self.assertEqual(node1.currNeighbor, 0)
+#   def test_GossipRotateNeighbors(self): 
+#     node1 = Node(1,16,3) 
+#     node2 = Node(2,16,3) 
+#     node3 = Node(3,16,3) 
+#     node4 = Node(4,16,3) 
+#     node1.neighbors = [node2, node3, node4] 
+#     node2.neighbors = [node3, node4, node1] 
+#     node3.neighbors = [node4, node1, node2] 
+#     node4.neighbors = [node1, node2, node3] 
+#     self.assertEqual(node1.currNeighbor, 0) 
+#     self.assertEqual(node1.neighbors, [node2, node3, node4]) 
+#     print 'Going to Gossip with %d' % node1.neighbors[0].ID 
+#     for node in node1.neighbors: 
+#       print node.ID 
+#     node1.Gossip() 
+#     self.assertEqual(node1.currNeighbor, 1) 
+#     self.assertEqual(node1.neighbors, [node2, node3, node4]) 
+#     print 'Going to Gossip with %d' % node1.neighbors[1].ID 
+#     for node in node1.neighbors: 
+#       print node.ID 
+#     node1.Gossip() 
+#     self.assertEqual(node1.currNeighbor, 2) 
+#     self.assertEqual(node1.neighbors, [node2, node3, node4]) 
+#     print 'Going to Gossip with %d' % node1.neighbors[2].ID 
+#     print 'Whos neighbors are:' 
+#     for node in node1.neighbors[2].neighbors: 
+#       print node.ID 
+#     print 'And' 
+#     for node in node1.neighbors: 
+#       print node.ID 
+#     node1.Gossip() 
+#     self.assertEqual(node1.currNeighbor, 0) 
+#     self.assertEqual(node1.neighbors, [node2, node3, node4]) 
+#     print 'Going to Gossip with %d' % node1.neighbors[0].ID 
+#     for node in node1.neighbors: 
+#       print node.ID 
+
+#   def test_GossipChooseNewNeighbors(self): 
+#     node1 = Node(1,16,3) 
+#     node2 = Node(2,16,3) 
+#     node3 = Node(3,16,3) 
+#     node4 = Node(4,16,3) 
+#     node5 = Node(5,16,3) 
+#     node6 = Node(6,16,3) 
+#     node7 = Node(7,16,3) 
+#     node8 = Node(8,16,3) 
+#     node1.neighbors = [node8, node6, node7] 
+#     node2.neighbors = [node8, node6, node7] 
+#     node8.neighbors = [node2, node3, node4] 
+#     node1.Gossip() # With node 8 persumably 
+#     self.assertEqual(node1.neighbors, [node2, node3, node4]) 
+#     # This is just convention, really nodes 4, 5, 6, and 7 are all equidistant 
+#     # from 1 
+#     self.assertEqual(node8.neighbors, [node4, node2, node3]) 
+#     node1.currNeighbor = 0 
+#     node1.Gossip() # With node 2 persumably 
+#     self.assertEqual(node1.neighbors, [node2, node3, node4]) 
+#     self.assertEqual(node2.neighbors, [node4, node3, node8]) 
+#}}}
 
 
-class TestSimulatorClass(unittest.TestCase):
+class TestSimulatorClass(unittest.TestCase): #{{{
   '''Unit Tests used during development to incrementally test features'''
   def test_init(self):
     smallSim = Simulator(15,16,3)
@@ -217,6 +269,21 @@ class TestSimulatorClass(unittest.TestCase):
     self.assertEqual(len(simData),5)
     cycles,distances = zip(*simData)
     self.assertEqual(list(cycles),range(5))
+
+#   def test_nodeBehaviorPostSim(self): 
+#     smallSim = Simulator(10,8,3) 
+#     for node in smallSim.nodes: 
+#       neighborIDs = [] 
+#       for n in node.neighbors: 
+#         neighborIDs.append(n.ID) 
+#       print neighborIDs 
+#     smallSim.Simulate() 
+#     for node in smallSim.nodes: 
+#       neighborIDs = [] 
+#       for n in node.neighbors: 
+#         neighborIDs.append(n.ID) 
+#       print neighborIDs 
+#}}}
 
 
 if __name__ == "__main__":

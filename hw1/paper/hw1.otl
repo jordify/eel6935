@@ -1,4 +1,4 @@
-Last Modified: Fri Jan 21, 2011 at 12:07
+Last Modified: Sat Jan 22, 2011 at 18:10
 
 Code
 	Unit tests!!
@@ -39,3 +39,33 @@ Paper
 		Graph of node connectivity at cycles 1, 5, 10, and 15
 	Conclusions
 		Short review and any thoughts to share
+Left todo:
+	Fix bug in GossipRotateNeighbors Code
+	Add a unit test to check what the neighbor lists look like after a simulation
+	Learn gaphviz and make the extra credit graphs
+	Download python 2.7.1 on rodge and get the argparse module if not standard
+	Play with the new unit tests to see if there's any more bugs
+	git push orign master from rodge
+	git pull and merge back on shih
+Scratch for new unit test for Gossip w/ ChooseNewNeighbor
+	node1
+		node2 - 1
+		node3 - 1
+		node4 - 2
+		node6 - 2
+		node7 - 2
+		node8 - 3
+	node2
+		node1 - 1
+		node3 - 2
+		node4 - 1
+		node6 - 3
+		node7 - 3
+		node8 - 2
+	node8
+		node1 - 3
+		node2 - 2
+		node3 - 4
+		node4 - 1
+		node6 - 5
+		node7 - 5
