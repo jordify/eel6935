@@ -2,16 +2,15 @@ Submission: jordi_hw1.tar
 Author: Jorge Gómez 
 Assignment: EEL6935 Homework #1
 
-*************************
 Included herein is:
-hw1.py -- The python source code for this assignment
-paper/hw1.otl -- My notes taken while writing code and the report
-paper/hw1.pdf -- A report detailing the results of this assignment
-paper/hw1.tex -- The file used to generate the pdf report
-paper/dist.bib -- Bibliography for works cited in the report
+* hw1.py -- The python source code for this assignment
+* paper/hw1.otl -- My notes taken while writing code and the report
+* paper/hw1.pdf -- A report detailing the results of this assignment
+* paper/hw1.tex -- The file used to generate the pdf report
+* paper/dist.bib -- Bibliography for works cited in the report
 
-*************************
-Compiling and running:
+### Compiling and running
+
 This assignment was written and tested with Python 2.7.1. There is no compilation required
 just run with the command:
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 """
 File: hw1.py
-Last Modified: Fri Jan 21, 2011 at 15:47
+Last Modified: Sat Jan 22, 2011 at 12:52
 Author: Jorge Gomez
 """
 
@@ -170,6 +170,23 @@ class TestNodeClass(unittest.TestCase):
     node2.ChooseNewNeighbors([node3,node4,node2])
     for node in node2.neighbors:
       self.assertLess(node.ID, 5)
+
+  def test_GossipRotateNeighbors(self):
+    node1 = Node(1,16,3)
+    node2 = Node(2,16,3)
+    node3 = Node(3,16,3)
+    node4 = Node(4,16,3)
+    node1.neighbors = [node2, node3, node4]
+    node2.neighbors = [node3, node4, node1]
+    node3.neighbors = [node4, node1, node2]
+    node4.neighbors = [node1, node2, node3]
+    self.assertEqual(node1.currNeighbor, 0)
+    node1.Gossip()
+    self.assertEqual(node1.currNeighbor, 1)
+    node1.Gossip()
+    self.assertEqual(node1.currNeighbor, 2)
+    node1.Gossip()
+    self.assertEqual(node1.currNeighbor, 0)
 
 
 class TestSimulatorClass(unittest.TestCase):
