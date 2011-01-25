@@ -1,4 +1,4 @@
-Last Modified: Sat Jan 22, 2011 at 18:10
+Last Modified: Tue Jan 25, 2011 at 11:09
 
 Code
 	Unit tests!!
@@ -40,13 +40,9 @@ Paper
 	Conclusions
 		Short review and any thoughts to share
 Left todo:
-	Fix bug in GossipRotateNeighbors Code
-	Add a unit test to check what the neighbor lists look like after a simulation
+	Unit tests, ensure it works
+		Add a unit test to check what the neighbor lists look like after a simulation
 	Learn gaphviz and make the extra credit graphs
-	Download python 2.7.1 on rodge and get the argparse module if not standard
-	Play with the new unit tests to see if there's any more bugs
-	git push orign master from rodge
-	git pull and merge back on shih
 Scratch for new unit test for Gossip w/ ChooseNewNeighbor
 	node1
 		node2 - 1
