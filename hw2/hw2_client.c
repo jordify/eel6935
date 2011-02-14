@@ -10,22 +10,9 @@
 #include <time.h>
 #include <ctype.h>
 
-void
-hw2_program_1(char *host)
-{
+void hw2_program_1(char *host){
 	CLIENT *clnt;
-	char * *result_1;
-	char *open_1_arg1;
-	char * *result_2;
-	char *find_1_arg1;
-	char * *result_3;
-	char *remove_1_arg1;
-	char * *result_4;
-	char *show_1_arg1;
-	char * *result_5;
-	char *write_1_arg1;
-	int write_1_arg2;
-	char *write_1_arg3;
+	char * *result;
 
         char cmd[21];
         char filename[21];
@@ -38,69 +25,66 @@ hw2_program_1(char *host)
 		exit (1);
 	}
 
-        open_1_arg1 = "open arg 1\n";
-        find_1_arg1 = "find arg\n";
-        remove_1_arg1 = "remove arg\n";
-        show_1_arg1 = "show arg\n";
-        write_1_arg1 = "write arg 1\n";
-        write_1_arg2 = 42;
-        write_1_arg3 = "write arg 3\n";
-
         while(1){
           printf("$");
           *strings = '\0';
           len = nextin(cmd, filename, strings);
           if (len<0){
             clnt_destroy(clnt);
-            printf("Exiting...\n");
+            printf("\nExiting...\n");
             exit(0);
           }
 
-          printf("%d\n", len);
-
           if (strcmp(cmd,"open") == 0){
 
-            result_1 = open_1(filename, len, clnt);
-            if (result_1 == (char **) NULL) {
+            result = open_1(filename, strings, clnt);
+            if (result == (char **) NULL) {
                     clnt_perror (clnt, "call failed");
             }
-            printf(*result_1);
+            printf(*result);
+          }
+          else if (strcmp(cmd,"find") == 0){
+
+            result = find_1(filename, clnt);
+            if (result == (char **) NULL) {
+                    clnt_perror (clnt, "call failed");
+            }
+            printf(*result);
+          }
+          else if (strcmp(cmd,"remove") == 0){
+
+            result = remove_1(filename, clnt);
+            if (result == (char **) NULL) {
+                    clnt_perror (clnt, "call failed");
+            }
+            printf(*result);
+          }
+          else if (strcmp(cmd,"show") == 0){
+
+            result = show_1(filename, clnt);
+            if (result == (char **) NULL) {
+                    clnt_perror (clnt, "call failed");
+            }
+            printf(*result);
+          }
+          else if (strcmp(cmd,"write") == 0){
+
+            result = write_1(strings, len, filename, clnt);
+            if (result == (char **) NULL) {
+                    clnt_perror (clnt, "call failed");
+            }
+            printf(*result);
           }
           else if(strcmp(cmd,"exit") == 0){
             clnt_destroy(clnt);
-            printf("Exiting...\n");
+            printf("\nExiting...\n");
             exit(0);
           }
 
         }
-        /*
-	result_2 = find_1(find_1_arg1, clnt);
-	if (result_2 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-        printf(*result_2);
-	result_3 = remove_1(remove_1_arg1, clnt);
-	if (result_3 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-        printf(*result_3);
-	result_4 = show_1(show_1_arg1, clnt);
-	if (result_4 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-        printf(*result_4);
-	result_5 = write_1(write_1_arg1, write_1_arg2, write_1_arg3, clnt);
-	if (result_5 == (char **) NULL) {
-		clnt_perror (clnt, "call failed");
-	}
-        printf(*result_5);
-	clnt_destroy (clnt);
-        */
 }
 
-int
-main (int argc, char *argv[])
-{
+int main (int argc, char *argv[]){
 	char *host;
 
 	if (argc < 2) {

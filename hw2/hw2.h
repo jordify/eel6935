@@ -16,7 +16,7 @@ extern "C" {
 
 struct open_1_argument {
 	char *arg1;
-	int arg2;
+	char *arg2;
 };
 typedef struct open_1_argument open_1_argument;
 
@@ -32,8 +32,8 @@ typedef struct write_1_argument write_1_argument;
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define OPEN 1
-extern  char ** open_1(char *, int , CLIENT *);
-extern  char ** open_1_svc(char *, int , struct svc_req *);
+extern  char ** open_1(char *, char *, CLIENT *);
+extern  char ** open_1_svc(char *, char *, struct svc_req *);
 #define FIND 2
 extern  char ** find_1(char *, CLIENT *);
 extern  char ** find_1_svc(char *, struct svc_req *);

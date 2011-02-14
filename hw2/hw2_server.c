@@ -9,53 +9,146 @@
 #include <dirent.h>
 #include <time.h>
 
-char **open_1_svc(char *arg1, int length,  struct svc_req *rqstp){
+char **open_1_svc(char *arg1, char *arg2,  struct svc_req *rqstp){
 	static char * result;
-        char filename[MAXFILENAME+1];
-
+        char filename[MAXFILENAME+1]; 
+        char strings[MAXSTRLEN+1];
+	char *data;
+	int res;
+        long fsize;
         strcpy(filename, arg1);
+        if (arg2 == NULL){
+          strcpy(strings, "0"); 
+        } else{
+          strcpy(strings, arg2); 
+        }
+
+        if (result == (char *)NULL){
+          result = (char *)malloc(MAXSTRLEN+1);
+        }
+        else{
+          result = (char *)realloc(result,MAXSTRLEN+1);
+        }
         
-        printf(filename);
-        printf("%d\n", length);
-        result = "Open\n";
+        res = create(filename);
+        if (res == 0) {
+            int length = atoi(strings);
+            if (length <= 0) {
+                    sprintf(result,"please speficy the number of bytes to read from file %s\n", filename);
+            }
+            data = (char *)malloc(length);
+            fsize = readfile(data, length, filename);
+            if (fsize < 0) {
+                    sprintf(result,"Error in opening:\n");
+            } else {
+                    sprintf(result,"%s\n", data);
+            }
+            free(data);
+        } else if(res == -1) {
+                sprintf(result,"Error in opening %s\n", filename);
+        } else {
+                sprintf(result,"File %s has been created \n", filename);
+        }
 
 	return &result;
 }
 
 char **find_1_svc(char *arg1,  struct svc_req *rqstp){
 	static char * result;
+        char filename[MAXFILENAME+1]; 
+        strcpy(filename, arg1);
+        long fsize;
 
-        printf(arg1);
-        result = "Find\n";
+        if (result == (char *)NULL){
+          result = (char *)malloc(MAXSTRLEN+1);
+        }
+        else{
+          result = (char *)realloc(result,MAXSTRLEN+1);
+        }
+        
+        if ((fsize = lookup(filename)) < 0) {
+                sprintf(result,"Could not find %s\n", filename);
+        } else {
+                sprintf(result,"File %s has %ld bytes\n", filename, fsize);
+        }
 
 	return &result;
 }
 
 char **remove_1_svc(char *arg1,  struct svc_req *rqstp){
 	static char * result;
+        char filename[MAXFILENAME+1]; 
+        strcpy(filename, arg1);
+        int res;
 
-        printf(arg1);
-        result = "Remove\n";
-
+        if (result == (char *)NULL){
+          result = (char *)malloc(MAXSTRLEN+1);
+        }
+        else{
+          result = (char *)realloc(result,MAXSTRLEN+1);
+        }
+        res = delete(filename);
+        if (res == 0) {
+                sprintf(result,"File %s has been removed\n", filename);
+        } else if (res == -2) {
+                sprintf(result,"File %s does not exist\n", filename);
+        } else {
+                sprintf(result,"Error in deleting %s\n", filename);
+        }
+        
 	return &result;
 }
 
 char **show_1_svc(char *arg1,  struct svc_req *rqstp){
 	static char * result;
+	file* lst;
 
-        printf(arg1);
-        result = "Show\n";
+        if (result == (char *)NULL){
+          result = (char *)calloc(MAXSTRLEN+1,1);
+        }
+        else{
+          free(result);
+          result = (char *)calloc(MAXSTRLEN+1,1);
+        }
+
+        lst = listfiles();
+        if (lst == NULL) {
+                printf("Error in showing:\n");
+        } else {
+                for (; lst != (file *) NULL; lst = lst->next) {
+                        sprintf(result,"%s%s\n", result,lst->filename);
+                }
+        }
 
 	return &result;
 }
 
 char **write_1_svc(char *arg1, int arg2, char *arg3,  struct svc_req *rqstp){
 	static char * result;
+        char filename[MAXFILENAME+1]; 
+        char strings[MAXSTRLEN+1];
+        long fsize;
 
-        printf(arg1);
-        printf("%d\n",arg2);
-        printf(arg3);
-        result = "Write\n";
+        strcpy(filename, arg3);
+        if (arg1 == NULL){
+          strcpy(strings, "0"); 
+        } else{
+          strcpy(strings, arg1); 
+        }
+
+        if (result == (char *)NULL){
+          result = (char *)malloc(MAXSTRLEN+1);
+        }
+        else{
+          result = (char *)realloc(result,MAXSTRLEN+1);
+        }
+
+        fsize = writefile(strings, arg2, filename);
+        if (fsize < 0) {
+                sprintf(result,"Error in writing:\n");
+        } else {
+                sprintf(result,"%d bytes of data were written to file %s\n", fsize, filename);
+        }
 
 	return &result;
 }

@@ -2,7 +2,7 @@
 
 program HW2_PROGRAM{
   version HW2_VERSION{
-    string OPEN(string, int) = 1;
+    string OPEN(string, string) = 1;
     string FIND(string) = 2;
     string REMOVE(string) = 3;
     string SHOW(string) = 4;
