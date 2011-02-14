@@ -11,30 +11,9 @@
 
 char **open_1_svc(char *filename, char *string, struct svc_req *rqstp){
 	static char * result;
-	int res;
-	char *data;
-	long fsize;
 
-        printf("Open was called!\n");
         printf(filename);
-        res = create(filename);
-        if (res == 0) {
-          int length = atoi(string);
-          if (length <= 0) {
-            sprintf(result,"please speficy the number of bytes to read from file s%\n", filename);
-          }
-          data = malloc(length);
-          fsize = readfile(data, length, filename);
-          if (fsize < 0) {
-            sprintf(result,"Error in opening:\n");
-          } else {
-            sprintf(result,"%s\n", data);
-          }
-        } else if(res == -1) {
-          sprintf(result,"Error in opening %s\n", filename);
-        } else {
-          sprintf(result,"File %s has been created \n", filename);
-        }
+        result = "yo\n";
 
 	return &result;
 }
