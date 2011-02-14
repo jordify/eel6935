@@ -38,7 +38,7 @@ int main (int argc, char **argv) {
 			if (res == 0) {
 				int length = atoi(string);
 				if (length <= 0) {
-					printf("please speficy the number of bytes to read from file s%\n", filename);
+					printf("please speficy the number of bytes to read from file %s\n", filename);
 					continue;
 				}
 				data = malloc(length);
