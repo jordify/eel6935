@@ -14,6 +14,12 @@ extern "C" {
 #endif
 
 
+struct open_1_argument {
+	char *arg1;
+	char *arg2;
+};
+typedef struct open_1_argument open_1_argument;
+
 struct write_1_argument {
 	char *arg1;
 	int arg2;
@@ -26,8 +32,8 @@ typedef struct write_1_argument write_1_argument;
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define OPEN 1
-extern  char ** open_1(char *, CLIENT *);
-extern  char ** open_1_svc(char *, struct svc_req *);
+extern  char ** open_1(char *, char *, CLIENT *);
+extern  char ** open_1_svc(char *, char *, struct svc_req *);
 #define FIND 2
 extern  char ** find_1(char *, CLIENT *);
 extern  char ** find_1_svc(char *, struct svc_req *);
@@ -64,9 +70,11 @@ extern int hw2_program_1_freeresult ();
 /* the xdr functions */
 
 #if defined(__STDC__) || defined(__cplusplus)
+extern  bool_t xdr_open_1_argument (XDR *, open_1_argument*);
 extern  bool_t xdr_write_1_argument (XDR *, write_1_argument*);
 
 #else /* K&R C */
+extern bool_t xdr_open_1_argument ();
 extern bool_t xdr_write_1_argument ();
 
 #endif /* K&R C */
