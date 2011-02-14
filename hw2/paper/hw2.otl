@@ -1,0 +1,9 @@
+Where to split the program?
+	At the function != main
+		Gives the client all of the work
+		More true to the assignment
+		Requires a struct to be passed over rpc
+			Unless the -N flag is included apparently
+	At the inputs to the simFS program {OPEN, REMOVE, SHOW, FIND, WRITE}
+		Each takes as input some newline terminated string
+		Returns a string which may have multiple newlines in it

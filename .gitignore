@@ -28,3 +28,4 @@
 # Project specific ignores below
 notes/*
 *.png
+*.o
