@@ -3,8 +3,8 @@
 
 # Parameters
 
-CLIENT = hw2_client
-SERVER = hw2_server
+CLIENT = client
+SERVER = server
 
 SOURCES_CLNT.c = 
 SOURCES_CLNT.h = 
@@ -20,7 +20,7 @@ OBJECTS_CLNT = $(SOURCES_CLNT.c:%.c=%.o) $(TARGETS_CLNT.c:%.c=%.o)
 OBJECTS_SVC = $(SOURCES_SVC.c:%.c=%.o) $(TARGETS_SVC.c:%.c=%.o)
 # Compiler flags 
 
-CFLAGS += -g 
+CFLAGS += -g -Wall
 LDLIBS += -lnsl
 RPCGENFLAGS = -N
 
@@ -41,6 +41,8 @@ $(CLIENT) : $(OBJECTS_CLNT)
 $(SERVER) : $(OBJECTS_SVC) 
 	$(LINK.c) -o $(SERVER) $(OBJECTS_SVC) $(LDLIBS)
 
- clean:
-	 $(RM) core $(TARGETS) $(OBJECTS_CLNT) $(OBJECTS_SVC) $(CLIENT) $(SERVER)
-
+clean:
+	 $(RM) *.o $(CLIENT) $(SERVER)
+send:
+	scp -P2222 $(CLIENT) jordi@faraday.acis.ufl.edu:~/testSpace/
+	scp -P2222 $(SERVER) jordi@faraday.acis.ufl.edu:~/testSpace/

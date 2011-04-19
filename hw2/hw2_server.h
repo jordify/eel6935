@@ -1,7 +1,11 @@
+#define MAXCOMMANDLEN 10
+#define MAXFILENAME 20
+#define MAXSTRLEN 1000
+
 typedef char *filetype;
-struct file {
-	filetype filename;
-	struct file *next;
+struct file{
+  filetype filename;
+  struct file *next;
 };
 
 typedef struct file file;

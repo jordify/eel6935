@@ -7,3 +7,7 @@ Where to split the program?
 	At the inputs to the simFS program {OPEN, REMOVE, SHOW, FIND, WRITE}
 		Each takes as input some newline terminated string
 		Returns a string which may have multiple newlines in it
+Are the file operations idempotent?
+List at least three differences between local and rempote procedure calls.
+List the basic steps that take place on the client and server during an RPC.
+Does memory need to be freed on the client of server?
