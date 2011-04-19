@@ -13,8 +13,9 @@ Title: RPC File System
 *  paper/dist.bib \- Bibliography for works cited in the report
 
 ### Compiling and running
-Compile with make
+Compile: 
+ make
 
 Run:
-./server
-./client <SERVER-IP>
+ ./server
+ ./client SERVER-IP

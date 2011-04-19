@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{cite, listing, graphicx, subfigure, amsmath}
+\title{EEL6935 Spring 11\\Homework 6\\Reliable Multicast with JGroups Toolkit}
+\date{April 22, 2011}
+\author{Jorge G\'omez}
+
+\begin{document}
+\maketitle
+\section{Answers to Assignment Questions}
+  \begin{itemize}
+    \item Are the file operations idempotent?\\
+      The functions are all idempotent because no matter how many times they are
+      called they will return the same result.
+    \item List at least three differences between local and remote procedure calls.
+	\begin{itemize}
+          \item Remote calls can involve a remote processor with it's own register file
+            and cache values.
+          \item Remote calls involve putting the arguments and return values of a function
+            in a serialized packet form for transfer over a network.
+          \item The call to a remote procedure must block execution on the caller.
+        \end{itemize}
+    \item List the basic steps that take place on the client and server during an RPC.\\
+      The client will call a local procedure that initiates a network transfer to the remote
+      host. The host then process the request and returns a value to the network. The local
+      procedure then returns the value to the caller.
+    \item Does memory need to be freed on the client of server?\\
+      Memory should be freed on the server so that multiple calls to the stub do not have
+      erroneous data contained within. Also, the server can run constantly and good memory
+      management is important to avoid memory leaks.
+  \end{itemize}
+\end{document}
