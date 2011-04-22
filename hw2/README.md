@@ -17,5 +17,5 @@ Compile:
  make
 
 Run:
- ./server
- ./client SERVER-IP
+  ./server
+  ./client SERVER-IP

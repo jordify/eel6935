@@ -5,4 +5,4 @@ all:
 clean:
 	rm *.class
 run:
-	java VSynchrony
+	java VSynchrony 10 54321

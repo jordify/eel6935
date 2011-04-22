@@ -1,0 +1,88 @@
+Notes from JGroups tutorial
+	Messages are sent multicast to the channel
+		They are received by the sender
+	The getState method returns a boolean
+		False iff you are the first member in the channel
+	MAKE SURE IT WORKS ON THE VMS
+		Yes, yes it does
+Virtual Machines
+	192.168.0.{117,118,119}
+	Pain in the ass to get files over there and coding there is out
+	Package up the final version and push to git
+Notes on the assignment
+	Stock exchange server replicated over the 3 VMs
+		Share state
+		Multiple clients
+		Multiple shared clients
+		Handle replica failures
+	Important sections of jgroups manual
+		Virtual Synchrony: 5.7 Flushing...
+		Message Ordering: 7.7.1 Sequencer
+	Group name needs to be unique
+		jordi-group
+	Deployment
+		First load stock info from index.properties
+		Then joing the jordi-group
+		The first server to join the group
+			Creates the client accounts
+		Else,
+			Make sure you received account information from first server
+		Wait for incoming requests
+	Client accounts
+		ID, Balance, [(stock, shares), ..]
+	Stock list
+		Name
+		Symbol
+		Shares
+		Price
+		Sell orders
+		Buy orders
+	Process request Loop (Event Loop)
+		Open a port
+		Take a client request
+		Process the request
+			This step updates the shared stated
+		Multicast a formatted request
+			This step prints the order
+		Close the port
+Organization
+	Request Class
+		Constructor takes in the request string from the socket
+			Splits on whitespace and stores all the values
+		What do I name these?
+		They are used in the buy/sell lists in the stock class
+	Stock Class
+		Constructor takes the Symbol Name String pair
+			Sets shares and price to default
+	Ledger
+		Hash map that could be replicated on the channel
+		Maps client ID string to Integer account balance
+	Index
+		Hash map that could be replicated on the channel
+		Maps String symbols to Stock objects
+
+	getInitStocks
+		Works
+	getInitLedger
+		Works
+	VClient
+		Works
+TO DO
+	Add in sync
+	Test sync
+	Fix ordering of requests
+		Sell list needs to be in increasing order
+		Buy list in decreasing order
+	Given time is an illustrious liquor...
+		Keep track of client stock balances
+		Function to check the validity of a trade before it's committed
+			Clients exists and have money?
+			Do they even own what they're selling?
+	Done but not totally tested
+		First
+			Get it to add the BUY or SELL to the stock's request list
+		Then
+			Add logic to match a BUY or SELL order to make a trade
+		Finally
+			Update price
+			Reflect trade in ledger

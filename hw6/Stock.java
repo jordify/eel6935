@@ -1,12 +1,14 @@
-import java.util.List;
 import java.util.LinkedList;
+import java.io.Serializable;
+//import java.io.StringCharacterIterator;
 
-class Stock {
+public class Stock implements Serializable{
+  private static final long serialVersionUID = 7526472295622776147L;
   String name;
   int shares;
   int price;
-  List<Request> sellList = new LinkedList<Request>();
-  List<Request> buyList = new LinkedList<Request>();
+  LinkedList<Request> sellList = new LinkedList<Request>();
+  LinkedList<Request> buyList = new LinkedList<Request>();
 
   Stock(String name) {
     this.name = name;
