@@ -70,6 +70,8 @@ Organization
 TO DO
 	Add in sync
 	Test sync
+	Fuck the dhts go with get and set state passing the hashtables
+		Needs everyone to process orders then
 	Fix ordering of requests
 		Sell list needs to be in increasing order
 		Buy list in decreasing order
@@ -86,3 +88,83 @@ TO DO
 		Finally
 			Update price
 			Reflect trade in ledger
+Report
+1)
+	 Distributed are the two hash tables and an integer representing the order
+	 number. The hash maps Represent the current ledger, mapping client IDs to
+	 their account balances, and the index, mapping stock symbols to a stock
+	 class. The stock class contains a buy request list, a sell request list,
+	 the stock name, the price, and the shares owned by the company.
+2)
+	 My program is not byzantine fault-tolerant. To do so we would have to add
+	 a voting adapter and perform votes on replicas of data. Currently, we
+	 just grab shared state data from one of our peers.
+3)
+	 It is not scalable. Multicasting messages does not scale well as protocols
+	 to do so are slow.
+4)
+	 I did not use additional distributed locks. All the processes act on their
+	 own copies of the data and only share incoming read-only messages. To get
+	 shared state they needed only to read from a peer
+
+TestResults.pdf contains graph of price after running these trades:
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 BUY GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 SELL GOOG 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 BUY AAPL 100 10
+	C0 SELL AAPL 100 10
+	C0 SELL AAPL 92 10
+	C0 SELL AAPL 84 10
+	C0 SELL AAPL 76 10
+	C0 SELL AAPL 68 10
+	C0 SELL AAPL 60 10
+	C0 SELL AAPL 52 10
+	C0 SELL AAPL 44 10
+	C0 SELL AAPL 36 10
+	C0 SELL AAPL 28 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 BUY AMZN 100 10
+	C0 SELL AMZN 10 10
+	C0 SELL AMZN 20 10
+	C0 SELL AMZN 30 10
+	C0 SELL AMZN 40 10
+	C0 SELL AMZN 50 10
+	C0 SELL AMZN 60 10
+	C0 SELL AMZN 70 10
+	C0 SELL AMZN 80 10
+	C0 SELL AMZN 90 10
+	C0 SELL AMZN 100 10

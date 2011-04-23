@@ -19,11 +19,12 @@ import java.net.ServerSocket;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
+import org.jgroups.ExtendedReceiverAdapter;
 import org.jgroups.View;
 import org.jgroups.util.Util;
 import org.jgroups.blocks.ReplicatedHashMap;
 
-public class VSynchrony extends ReceiverAdapter {
+public class VSynchrony extends ExtendedReceiverAdapter {
   JChannel channel;
   Integer orderNum = 0;
   HashMap<String,Integer> ledger = null;
@@ -33,12 +34,19 @@ public class VSynchrony extends ReceiverAdapter {
     channel = new JChannel();
     channel.connect("jordi-group");
     channel.setReceiver(this);
-    // Set up replicated hash maps
-    ledger = new HashMap<String,Integer>(channel);
-    index = new HashMap<String,Stock>(channel);
-    if(!channel.getState(null, 10000)) {
+    // Set up hash maps
+    ledger = new HashMap<String,Integer>();
+    index = new HashMap<String,Stock>();
+    if(!channel.getState(null,"orderNum", 10000)) {
+      System.out.println("False getState");
       this.getInitStocks();
       this.makeInitLedger(clients);
+    } else {
+      System.out.println("True getState");
+      channel.getState(null,"orderNum", 10000); 
+      channel.getState(null,"ledger", 10000); 
+      //channel.getState(null,"index", 10000); 
+      // This won't transfer for whatever reason ARG.
     }
     eventLoop(port);
     channel.close();
@@ -67,7 +75,6 @@ public class VSynchrony extends ReceiverAdapter {
           break;
         } else {
           // Handle request, multicast the request
-          this.handleRequest(new Request(request));
           Message msg = new Message(null,null,request);
           channel.send(msg);
         }
@@ -197,6 +204,9 @@ public class VSynchrony extends ReceiverAdapter {
   public void receive(Message msg) {
     String order = (String)msg.getObject();
     Request request = new Request(order);
+    // Handle order
+    this.handleRequest(request);
+    // Print stuff
     Stock stock = this.index.get(request.symbol);
     System.out.println("---------------------------------------------------------------------------------");
     System.out.println("Order " + this.orderNum + ": " + this.requestToString(request));
@@ -215,28 +225,78 @@ public class VSynchrony extends ReceiverAdapter {
   }
 
   public byte[] getState() { // Called in the state provider
-    synchronized(orderNum) {
-      try {
-        return Util.objectToByteBuffer((Integer)orderNum);
+    return getState("orderNum");
+  }
+  public byte[] getState(String id) { // Called in the state provider
+    System.out.println("GETSTATE");
+    System.out.println(id);
+    if(id.equalsIgnoreCase("orderNum")){
+      System.out.println("True orderNum");
+      synchronized(orderNum) {
+        try {
+          return Util.objectToByteBuffer((Integer)orderNum);
+        } catch(Exception e) {
+          e.printStackTrace();
+          return null;
+        }
       }
-      catch(Exception e) {
-        e.printStackTrace();
-        return null;
+    } else if(id.equalsIgnoreCase("ledger")){
+      synchronized(ledger) {
+        try {
+          return Util.objectToByteBuffer(ledger);
+        } catch(Exception e) {
+          e.printStackTrace();
+          return null;
+        }
       }
+    } else if(id.equalsIgnoreCase("index")){
+      synchronized(index) {
+        try {
+          return Util.objectToByteBuffer(index);
+        } catch(Exception e) {
+          e.printStackTrace();
+          return null;
+        }
+      }
+    } else {
+      System.out.println("False orderNum");
+      return null;
     }
   }
 
   public void setState(byte[] new_state) { // Called in the state requester
-    try {
-      int newNum = (Integer)Util.objectFromByteBuffer(new_state);
-      synchronized(orderNum) {
-        orderNum = newNum;
+    setState("full", new_state);
+  }
+  public void setState(String id, byte[] new_state) { // Called in the state requester
+    if(id.equalsIgnoreCase("orderNum")){
+      try {
+        int newState = (Integer)Util.objectFromByteBuffer(new_state);
+        synchronized(orderNum) {
+          orderNum = newState;
+        }
+      } catch(Exception e) {
+        e.printStackTrace();
       }
-      System.out.println("Got State: Current Order Num=" + orderNum);
+    } else if(id.equalsIgnoreCase("ledger")){
+      try {
+        HashMap<String,Integer> newState = (HashMap<String,Integer>)Util.objectFromByteBuffer(new_state);
+        synchronized(ledger) {
+          ledger = newState;
+        }
+      } catch(Exception e) {
+        e.printStackTrace();
+      }
+    } else if(id.equalsIgnoreCase("index")){
+      try {
+        HashMap<String,Stock> newState = (HashMap<String,Stock>)Util.objectFromByteBuffer(new_state);
+        synchronized(index) {
+          index = newState;
+        }
+      } catch(Exception e) {
+        e.printStackTrace();
+      }
     }
-    catch(Exception e) {
-      e.printStackTrace();
-    }
+    System.out.println("Got State: Current Order Num=" + orderNum);
   }
 
   public static void main(String[] args) throws Exception

@@ -1,4 +1,6 @@
-class Request {
+import java.io.Serializable;
+
+class Request implements Serializable{
   String client;
   String action;
   String symbol;

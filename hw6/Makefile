@@ -1,6 +1,7 @@
 all:
 	javac Request.java
 	javac Stock.java
+	javac State.java
 	javac VSynchrony.java
 clean:
 	rm *.class
